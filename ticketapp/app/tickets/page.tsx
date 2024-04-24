@@ -5,14 +5,15 @@ import Link from "next/link";
 import { buttonVariants } from "@/components/ui/button";
 import Pagination from "@/components/Pagination";
 import StatusFilter from "@/components/StatusFilter";
-import { Status } from "@prisma/client";
+import { Status, Ticket } from "@prisma/client";
 
-interface searchParams {
+export interface SearchParams {
   status: Status;
   page: string;
+  orderBy: keyof Ticket;
 }
 
-const Tickets = async ({ searchParams }: { searchParams: searchParams }) => {
+const Tickets = async ({ searchParams }: { searchParams: SearchParams }) => {
   const pageSize = 10;
   const page = parseInt(searchParams.page) || 1;
 
@@ -52,7 +53,7 @@ const Tickets = async ({ searchParams }: { searchParams: searchParams }) => {
         </Link>
         <StatusFilter />
       </div>
-      <DataTable tickets={tickets} />
+      <DataTable tickets={tickets} searchParams={searchParams} />
       <Pagination
         itemCount={ticketCount}
         pageSize={pageSize}
